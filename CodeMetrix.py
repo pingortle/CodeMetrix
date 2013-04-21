@@ -52,6 +52,9 @@ abbreviations = [
     'GB',
     'TB',
     'PB',
+    'EB',
+    'ZB',
+    'YB',
     'Insane Bytes!',
     ]
 displayedSize = float(byteSum)
