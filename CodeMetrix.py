@@ -72,9 +72,9 @@ def dataUnitsFromBytes(numberOfBytes):
         return 'This is just way too big.'
 
 if __name__ == '__main__':
-    import sys
-    if sys.argv.count > 1:
-        map(printDirInfo, sys.argv[1:])
+    from sys import argv
+    if argv.count > 1:
+        map(printDirInfo, argv[1:])
     else:
         printDirInfo(os.getcwd())
         print os.getcwd()
