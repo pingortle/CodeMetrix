@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import os
+from os import walk, getcwd
 from os.path import join, getsize, splitext
+from fileinput import input
 
-fileExts = [
-    '.cs',
-    '.xaml',
+dataExts = [
     '.png',
     '.bmp',
     '.txt',
@@ -14,18 +13,29 @@ fileExts = [
     '.fbx',
     '.x',
     '.dds',
+    '.jpg',
+    '.csproj',
+    '.contentproj',
+    '.dll',
+    '.ico',
+    '.xml',
+    ]
+codeExts = [
+    '.cs',
+    '.xaml',
     '.nsi',
     '.iss',
-    '.jpg',
     '.py',
-    ]
-ignoredFolders = ['.git', 'packages', 'bin', 'obj']
+]
+ignoredFolders =  ['.git', 'packages', 'bin', 'obj']
 
 def printDirInfo(root):
+    fileExts = dataExts + codeExts
     fileExtensionCounts = {}
     byteSum = 0
+    lineSum = 0
 
-    for (path, dirs, files) in os.walk(root):
+    for (path, dirs, files) in walk(root):
         for name, ext in filter(\
             lambda x: x[1].lower() in fileExts,\
             map(lambda y: splitext(y), files)):
@@ -35,6 +45,8 @@ def printDirInfo(root):
             except KeyError:
                 fileExtensionCounts[key] = 1
             byteSum += getsize(join(path, name + ext))
+            if key in codeExts:
+                lineSum += sum(1 for line in open(join(path, name + ext)))
         for d in ignoredFolders:
             if d in dirs:
                 dirs.remove(d)
@@ -42,7 +54,9 @@ def printDirInfo(root):
     for key in sorted(fileExtensionCounts.keys()):
         print key, ' = ', str(fileExtensionCounts[key])
 
+    print
     print 'Total # of files: ', str(sum(fileExtensionCounts.values()))
+    print 'Total # of lines: ', lineSum
 
     print
     print 'Total relevant file size:', dataUnitsFromBytes(byteSum)
@@ -76,5 +90,5 @@ if __name__ == '__main__':
     if argv.count > 1:
         map(printDirInfo, argv[1:])
     else:
-        printDirInfo(os.getcwd())
-        print os.getcwd()
+        printDirInfo(getcwd())
+        print getcwd()
