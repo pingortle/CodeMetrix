@@ -25,17 +25,19 @@ def printDirInfo(root):
     fileExtensionCounts = {}
     byteSum = 0
 
-    for (root, dirs, files) in os.walk(root):
-        byteSum += sum(getsize(join(root, file)) for file in files)
-        for ext in filter(lambda x: x in fileExts, map(lambda y: \
-                          splitext(y)[1].lower(), files)):
+    for (path, dirs, files) in os.walk(root):
+        for name, ext in filter(\
+            lambda x: x[1].lower() in fileExts,\
+            map(lambda y: splitext(y), files)):
+            key = ext.lower()
             try:
-                fileExtensionCounts[ext] += 1
+                fileExtensionCounts[key] += 1
             except KeyError:
-                fileExtensionCounts[ext] = 1
-        for folder in ignoredFolders:
-            if folder in dirs:
-                dirs.remove(folder)
+                fileExtensionCounts[key] = 1
+            byteSum += getsize(join(path, name + ext))
+        for d in ignoredFolders:
+            if d in dirs:
+                dirs.remove(d)
 
     for key in sorted(fileExtensionCounts.keys()):
         print key, ' = ', str(fileExtensionCounts[key])
