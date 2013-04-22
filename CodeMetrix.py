@@ -51,7 +51,13 @@ def printDirInfo(root):
             if d in dirs:
                 dirs.remove(d)
 
-    for key in sorted(fileExtensionCounts.keys()):
+    print 'Data files:'
+    for key in sorted(set(fileExtensionCounts.keys()) & set(dataExts)):
+        print key, ' = ', str(fileExtensionCounts[key])
+
+    print
+    print 'Code files:'
+    for key in sorted(set(fileExtensionCounts.keys()) & set(codeExts)):
         print key, ' = ', str(fileExtensionCounts[key])
 
     print
