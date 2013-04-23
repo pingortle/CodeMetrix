@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from os import walk, getcwd
 from os.path import join, getsize, splitext
@@ -51,21 +51,21 @@ def printDirInfo(root):
             if d in dirs:
                 dirs.remove(d)
 
-    print 'Data files:'
+    print('Data files:')
     for key in sorted(set(fileExtensionCounts.keys()) & set(dataExts)):
-        print key, ' = ', str(fileExtensionCounts[key])
+        print(key, ' = ', str(fileExtensionCounts[key]))
 
-    print
-    print 'Code files:'
+    print()
+    print('Code files:')
     for key in sorted(set(fileExtensionCounts.keys()) & set(codeExts)):
-        print key, ' = ', str(fileExtensionCounts[key])
+        print(key, ' = ', str(fileExtensionCounts[key]))
 
-    print
-    print 'Total # of files: ', str(sum(fileExtensionCounts.values()))
-    print 'Total # of lines: ', lineSum
+    print()
+    print('Total # of files: ', str(sum(fileExtensionCounts.values())))
+    print('Total # of lines: ', lineSum)
 
-    print
-    print 'Total relevant file size:', dataUnitsFromBytes(byteSum)
+    print()
+    print('Total relevant file size:', dataUnitsFromBytes(byteSum))
 
 def dataUnitsFromBytes(numberOfBytes):
     abbreviations = [
@@ -93,8 +93,8 @@ def dataUnitsFromBytes(numberOfBytes):
 
 if __name__ == '__main__':
     from sys import argv
-    if argv.count > 1:
-        map(printDirInfo, argv[1:])
+    if len(argv) > 1:
+        list(map(printDirInfo, argv[1:]))
     else:
         printDirInfo(getcwd())
-        print getcwd()
+        print(getcwd())
